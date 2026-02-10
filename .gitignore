@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+*.log
+.env
+.env.local
+.env.production
+DEPLOYMENT_SECRETS.md
+*.pem
+.claude/
