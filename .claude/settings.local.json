@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(psql:*)",
+      "Bash(brew:*)",
+      "Bash(docker:*)",
+      "Bash(cd:*)",
+      "Bash(npm run migrate:up:*)",
+      "Bash(ping:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(npm create vite@latest frontend -- --template react-ts)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(lsof:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
