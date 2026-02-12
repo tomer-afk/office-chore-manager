@@ -2,16 +2,26 @@ const { Pool } = require('pg');
 const config = require('../config/environment');
 
 // Create PostgreSQL connection pool
-const pool = new Pool({
-  host: config.database.host,
-  port: config.database.port,
-  database: config.database.name,
-  user: config.database.user,
-  password: config.database.password,
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection can't be established
-});
+const poolConfig = config.database.url
+  ? {
+      connectionString: config.database.url,
+      ssl: { rejectUnauthorized: false },
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
+    }
+  : {
+      host: config.database.host,
+      port: config.database.port,
+      database: config.database.name,
+      user: config.database.user,
+      password: config.database.password,
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    };
+
+const pool = new Pool(poolConfig);
 
 // Test the connection
 pool.on('connect', () => {
