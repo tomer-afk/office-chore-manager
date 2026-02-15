@@ -8,6 +8,11 @@ const config = require('./config/environment');
 // Create Express app
 const app = express();
 
+// Trust proxy when behind reverse proxy (Railway, etc.)
+if (config.nodeEnv === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Security middleware
 app.use(helmet());
 
