@@ -1,9 +1,18 @@
 const User = require('../models/User');
+const config = require('../config/environment');
 const {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
 } = require('../middleware/auth');
+
+const isProduction = config.nodeEnv === 'production';
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'strict',
+};
 
 /**
  * Register a new user
@@ -38,16 +47,12 @@ exports.register = async (req, res, next) => {
 
     // Set tokens in HTTP-only cookies
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -109,16 +114,12 @@ exports.login = async (req, res, next) => {
 
     // Set tokens in HTTP-only cookies
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -202,9 +203,7 @@ exports.refreshToken = (req, res) => {
     const accessToken = generateAccessToken(decoded);
 
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      ...cookieOptions,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
