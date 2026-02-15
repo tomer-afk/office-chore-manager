@@ -4,6 +4,7 @@ import { useChores } from '../hooks/useChores';
 import { Button } from '../components/ui/Button';
 import { ChoreCard } from '../components/chores/ChoreCard';
 import { ChoreForm } from '../components/chores/ChoreForm';
+import { CalendarView } from '../components/chores/calendar';
 import { TeamForm } from '../components/team/TeamForm';
 import { TeamMembersModal } from '../components/team/TeamMembersModal';
 
@@ -14,6 +15,7 @@ export const ChoresPage = () => {
   const [showCreateTeamForm, setShowCreateTeamForm] = useState(false);
   const [showMembersModal, setShowMembersModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('active');
+  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
 
   // Use the first team by default
   const currentTeamId = selectedTeamId || teams[0]?.id;
@@ -175,42 +177,81 @@ export const ChoresPage = () => {
           )}
         </div>
 
-        {/* Status Filter */}
-        <div className="mb-6 flex gap-2">
-          <button
-            onClick={() => setFilterStatus('active')}
-            className={`px-4 py-2 rounded-md ${
-              filterStatus === 'active'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
-            }`}
-          >
-            Active
-          </button>
-          <button
-            onClick={() => setFilterStatus('completed')}
-            className={`px-4 py-2 rounded-md ${
-              filterStatus === 'completed'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
-            }`}
-          >
-            Completed
-          </button>
-          <button
-            onClick={() => setFilterStatus('')}
-            className={`px-4 py-2 rounded-md ${
-              filterStatus === ''
-                ? 'bg-indigo-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300'
-            }`}
-          >
-            All
-          </button>
+        {/* Status Filter and View Toggle */}
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setFilterStatus('active')}
+              className={`px-4 py-2 rounded-md ${
+                filterStatus === 'active'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-gray-700 border border-gray-300'
+              }`}
+            >
+              Active
+            </button>
+            <button
+              onClick={() => setFilterStatus('completed')}
+              className={`px-4 py-2 rounded-md ${
+                filterStatus === 'completed'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-gray-700 border border-gray-300'
+              }`}
+            >
+              Completed
+            </button>
+            <button
+              onClick={() => setFilterStatus('')}
+              className={`px-4 py-2 rounded-md ${
+                filterStatus === ''
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-gray-700 border border-gray-300'
+              }`}
+            >
+              All
+            </button>
+          </div>
+          <div className="flex rounded-md border border-gray-300 overflow-hidden">
+            <button
+              onClick={() => setViewMode('list')}
+              className={`px-3 py-2 text-sm font-medium ${
+                viewMode === 'list'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`px-3 py-2 text-sm font-medium border-l border-gray-300 ${
+                viewMode === 'calendar'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Chores List */}
-        {choresLoading ? (
+        {/* Chores Content */}
+        {viewMode === 'calendar' && currentTeamId ? (
+          <CalendarView
+            teamId={currentTeamId}
+            filterStatus={filterStatus}
+            onComplete={(chore) => completeChore({ id: chore.id })}
+            onDelete={(chore) => {
+              if (confirm('Are you sure you want to delete this chore?')) {
+                deleteChore(chore.id);
+              }
+            }}
+          />
+        ) : choresLoading ? (
           <div className="text-center py-12">
             <div className="text-gray-600">Loading chores...</div>
           </div>

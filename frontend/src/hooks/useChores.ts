@@ -48,6 +48,7 @@ export const useChores = (teamId: number, filters?: any) => {
     mutationFn: (id: number) => choresApi.deleteChore(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['chores', teamId] });
+      queryClient.invalidateQueries({ queryKey: ['calendar', teamId] });
       toast.success('Chore deleted successfully!');
     },
     onError: (error: any) => {
@@ -61,6 +62,7 @@ export const useChores = (teamId: number, filters?: any) => {
       choresApi.completeChore(id, notes),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['chores', teamId] });
+      queryClient.invalidateQueries({ queryKey: ['calendar', teamId] });
       toast.success('Chore marked as complete!');
     },
     onError: (error: any) => {
