@@ -66,7 +66,7 @@ export const AddMemberForm = ({ teamId, onSuccess, onCancel }: AddMemberFormProp
       </div>
 
       <div className="flex gap-3 pt-4">
-        <Button type="submit" loading={addMemberMutation.isPending}>
+        <Button type="submit" isLoading={addMemberMutation.isPending}>
           Add Member
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>

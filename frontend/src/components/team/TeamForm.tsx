@@ -62,7 +62,7 @@ export const TeamForm = ({ onSuccess, onCancel }: TeamFormProps) => {
       </div>
 
       <div className="flex gap-3 pt-4">
-        <Button type="submit" loading={isCreating}>
+        <Button type="submit" isLoading={isCreating}>
           Create Team
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>

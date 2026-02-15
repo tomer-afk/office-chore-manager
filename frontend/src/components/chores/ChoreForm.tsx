@@ -237,7 +237,7 @@ export const ChoreForm = ({ teamId, chore, onSuccess, onCancel }: ChoreFormProps
 
       {/* Actions */}
       <div className="flex gap-3 pt-4">
-        <Button type="submit" loading={isCreating || isUpdating}>
+        <Button type="submit" isLoading={isCreating || isUpdating}>
           {chore ? 'Update Chore' : 'Create Chore'}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>

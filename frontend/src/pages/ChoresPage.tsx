@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import { useTeams } from '../hooks/useTeams';
 import { useChores } from '../hooks/useChores';
 import { Button } from '../components/ui/Button';
@@ -9,7 +8,6 @@ import { TeamForm } from '../components/team/TeamForm';
 import { TeamMembersModal } from '../components/team/TeamMembersModal';
 
 export const ChoresPage = () => {
-  const { user } = useAuth();
   const { teams, isLoading: teamsLoading } = useTeams();
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
