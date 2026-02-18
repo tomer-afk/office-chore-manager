@@ -6,21 +6,35 @@ import { useAuthStore } from '../store/authStore';
 import type { LoginCredentials, RegisterCredentials } from '../types/auth';
 import { ROUTES } from '../config/constants';
 
-export function useAuth() {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const { setUser, logout: clearAuth } = useAuthStore();
+export function useAuthCheck() {
+  const { setUser } = useAuthStore();
 
-  const { isLoading: isLoadingUser } = useQuery({
+  const query = useQuery({
     queryKey: ['currentUser'],
     queryFn: async () => {
-      const data = await authApi.getCurrentUser();
-      setUser(data.user);
-      return data.user;
+      try {
+        const data = await authApi.getCurrentUser();
+        setUser(data.user);
+        return data.user;
+      } catch {
+        setUser(null);
+        return null;
+      }
     },
     retry: false,
     staleTime: Infinity,
   });
+
+  return {
+    isLoading: query.isLoading,
+    isResolved: query.isFetched,
+  };
+}
+
+export function useAuth() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { setUser, logout: clearAuth } = useAuthStore();
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginCredentials) => authApi.login(data),
@@ -71,7 +85,6 @@ export function useAuth() {
   });
 
   return {
-    isLoadingUser,
     login: loginMutation.mutate,
     isLoggingIn: loginMutation.isPending,
     register: registerMutation.mutate,

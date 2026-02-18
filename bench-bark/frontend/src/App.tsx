@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
+import { useAuthCheck } from './hooks/useAuth';
 import Layout from './components/layout/Layout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute';
@@ -20,9 +20,9 @@ import AdminLessonFormPage from './pages/AdminLessonFormPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
-  const { isLoadingUser } = useAuth();
+  const { isLoading, isResolved } = useAuthCheck();
 
-  if (isLoadingUser) {
+  if (isLoading && !isResolved) {
     return <LoadingSpinner size="lg" className="min-h-screen" />;
   }
 
