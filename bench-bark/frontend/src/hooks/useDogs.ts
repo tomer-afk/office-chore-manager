@@ -61,6 +61,15 @@ export function useDeleteDog() {
   });
 }
 
+export function useAnalyzePhoto() {
+  return useMutation({
+    mutationFn: (file: File) => dogsApi.analyzePhoto(file),
+    onError: (err: any) => {
+      toast.error(err.response?.data?.error || 'Failed to analyze photo');
+    },
+  });
+}
+
 export function useUploadDogPhoto() {
   const queryClient = useQueryClient();
   return useMutation({

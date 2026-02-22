@@ -35,6 +35,22 @@ export interface CreateDogInput {
   special_needs?: string;
   medical_notes?: string;
   vaccination_records?: VaccinationRecord[];
+  photo_url?: string;
+  photo_public_id?: string;
+  ai_breed_confidence?: number;
+  ai_age_confidence?: number;
+  ai_raw_response?: Record<string, any>;
+}
+
+export interface AnalyzePhotoResponse {
+  photo_url: string;
+  photo_public_id: string;
+  ai_analysis: {
+    breed: string;
+    estimated_age: string;
+    breed_confidence: number;
+    age_confidence: number;
+  } | null;
 }
 
 export interface UpdateDogInput extends Partial<CreateDogInput> {}

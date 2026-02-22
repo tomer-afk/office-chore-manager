@@ -55,7 +55,7 @@ export function useAuth() {
       setUser(data.user);
       queryClient.setQueryData(['currentUser'], data.user);
       toast.success('Account created!');
-      navigate(ROUTES.DASHBOARD);
+      navigate(ROUTES.ONBOARDING);
     },
     onError: (err: any) => {
       toast.error(err.response?.data?.error || 'Registration failed');

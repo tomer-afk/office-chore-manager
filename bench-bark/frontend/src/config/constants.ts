@@ -3,6 +3,7 @@ export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:30
 export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
+  ONBOARDING: '/onboarding',
   DASHBOARD: '/dashboard',
   DOGS: '/dogs',
   DOG_NEW: '/dogs/new',

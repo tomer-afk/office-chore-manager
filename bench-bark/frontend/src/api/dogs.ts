@@ -1,5 +1,5 @@
 import client from './client';
-import type { Dog, CreateDogInput, UpdateDogInput, PhotoAnalysisResponse } from '../types/dog';
+import type { Dog, CreateDogInput, UpdateDogInput, PhotoAnalysisResponse, AnalyzePhotoResponse } from '../types/dog';
 
 export const dogsApi = {
   getDogs: () =>
@@ -21,6 +21,14 @@ export const dogsApi = {
     const formData = new FormData();
     formData.append('photo', file);
     return client.post<PhotoAnalysisResponse>(`/dogs/${id}/photo`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then((r) => r.data);
+  },
+
+  analyzePhoto: (file: File) => {
+    const formData = new FormData();
+    formData.append('photo', file);
+    return client.post<AnalyzePhotoResponse>('/dogs/analyze-photo', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }).then((r) => r.data);
   },

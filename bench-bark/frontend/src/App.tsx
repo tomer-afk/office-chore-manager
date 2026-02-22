@@ -17,6 +17,7 @@ import LessonDetailPage from './pages/LessonDetailPage';
 import AdminLessonsPage from './pages/AdminLessonsPage';
 import AdminCategoriesPage from './pages/AdminCategoriesPage';
 import AdminLessonFormPage from './pages/AdminLessonFormPage';
+import OnboardingPage from './pages/OnboardingPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
@@ -34,6 +35,8 @@ export default function App() {
 
       {/* Protected routes */}
       <Route element={<ProtectedRoute />}>
+        {/* Onboarding — full-screen, no layout */}
+        <Route path="/onboarding" element={<OnboardingPage />} />
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dogs" element={<DogsPage />} />

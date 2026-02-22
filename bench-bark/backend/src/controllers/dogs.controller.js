@@ -56,6 +56,31 @@ export async function deleteDog(req, res, next) {
   }
 }
 
+export async function analyzePhoto(req, res, next) {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+
+    const { url, publicId } = await uploadImage(req.file.path);
+    await unlink(req.file.path).catch(() => {});
+
+    let aiResult = null;
+    try {
+      aiResult = await analyzeBreedAndAge(url);
+    } catch (err) {
+      console.error('AI analysis failed:', err.message);
+    }
+
+    res.json({
+      photo_url: url,
+      photo_public_id: publicId,
+      ai_analysis: aiResult && !aiResult.error ? aiResult : null,
+    });
+  } catch (err) {
+    if (req.file) await unlink(req.file.path).catch(() => {});
+    next(err);
+  }
+}
+
 export async function uploadPhoto(req, res, next) {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
